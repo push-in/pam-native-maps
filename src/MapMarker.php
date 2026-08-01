@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=1);namespace Pam\Native\Maps;use InvalidArgumentException;use JsonSerializable;
+final readonly class MapMarker implements JsonSerializable{public function __construct(public string$identifier,public Coordinate$coordinate,public string$title='',public string$subtitle=''){if(preg_match('/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$/D',$identifier)!==1)throw new InvalidArgumentException('Marker identifiers must be bounded safe ASCII.');if(strlen($title)>256||strlen($subtitle)>512)throw new InvalidArgumentException('Marker labels are too long.');}public function jsonSerialize():array{return['id'=>$this->identifier,...$this->coordinate->jsonSerialize(),'title'=>$this->title,'subtitle'=>$this->subtitle];}}
