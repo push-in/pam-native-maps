@@ -3,8 +3,8 @@
 Native Google Maps on Android and MapKit on iOS behind one immutable PHP API. It supports camera control, map styles, up to 5,000 markers, user location, gestures, and typed map, marker, camera, and error events.
 
 ```bash
-composer require pushinbr/pam-native-maps
-pam mobile sync
+pam add maps
+pam doctor
 ```
 
 ```php
@@ -16,3 +16,48 @@ MapView::make(new Coordinate(-23.5505, -46.6333), 14)
 ```
 
 Android apps must provide `com.google.android.geo.API_KEY` in their application manifest. Request location permission at runtime before enabling user location. The package never stores or transmits API keys.
+
+
+## What installation does
+
+`pam add maps` resolves the official compatible package, performs a non-mutating Composer preflight, updates the normal `composer.json` and `composer.lock`, refreshes generated native integration when required, and leaves the project ready for `pam doctor` validation.
+
+Use `pam packages` to inspect availability and `pam remove maps` to uninstall the capability safely. Direct Composer commands are an advanced interoperability path; PAM is the supported application workflow.
+
+## API guide
+
+| API | Responsibility |
+| --- | --- |
+| `MapView` | Render a declarative native map and receive typed events. |
+| `Coordinate` | Represent validated latitude and longitude. |
+| `MapMarker` | Describe stable marker identity and presentation. |
+| `MapStyle` | Select the platform-normalized map style. |
+| `MapEventKind` | Handle camera, marker, and error events. |
+
+All coded states, kinds, and variants are sequential integer-backed enums. Use enum cases in application code; do not depend on raw wire numbers.
+
+## Production checklist
+
+- Keep marker identifiers stable so reconciliation can update instead of recreate.
+- Request location permission before enabling user location.
+- Restrict and rotate the Android Maps API key using application and API restrictions.
+- Run `pam doctor`, `pam test`, and a signed release build on every supported platform.
+- Exercise denial, cancellation, backgrounding, process restart, and offline behavior before release.
+
+## Troubleshooting
+
+- **Android map is blank:** verify the manifest API key, billing, and key restrictions.
+- **User location is absent:** confirm runtime permission before enabling it.
+- **Large marker updates stutter:** preserve IDs and batch state changes.
+- **Native integration is stale:** run `pam doctor --fix`, rebuild the native host, and inspect the first reported diagnostic.
+
+## Compatibility and support
+
+This package targets PAM Native `0.6.x`, Android API 26+, and iOS 15+ unless a platform-specific section above states a stricter requirement. Platform SDKs, credentials, entitlements, physical hardware, and store configuration remain application responsibilities.
+
+- [PAM documentation](https://push-in.github.io/pam-docs/introduction/)
+- [PAM Native overview](https://push-in.github.io/pam-docs/native/overview/)
+- [Plugin and native capability model](https://push-in.github.io/pam-docs/native/plugins/)
+- [Report an issue](https://github.com/push-in/pam-native-maps/issues)
+
+Security vulnerabilities should be reported through the repository security policy or GitHub private vulnerability reporting, not a public issue.
