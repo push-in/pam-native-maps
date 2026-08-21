@@ -1,5 +1,21 @@
 # PAM Native Maps
 
+## Start here
+
+This is a Composer extension for PAM Native. Install the PAM Runtime, create a native project, and then add this package through PAM’s verified Composer toolchain:
+
+```bash
+curl --proto '=https' --proto-redir '=https' --tlsv1.2 \
+    --connect-timeout 15 --max-time 60 --max-filesize 1048576 -fsSL \
+    https://github.com/push-in/pam/releases/latest/download/install.sh | sh
+
+pam init my-app --template native
+cd my-app
+pam composer require pushinbr/pam-native-maps
+pam doctor --fix
+```
+
+
 Native Google Maps on Android and MapKit on iOS behind one immutable PHP API. It supports camera control, map styles, up to 5,000 markers, user location, gestures, and typed map, marker, camera, and error events.
 
 ```bash
